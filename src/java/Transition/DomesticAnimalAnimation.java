@@ -1,10 +1,12 @@
 package Transition;
 
 import View.Components.DomesticAnimal;
+import View.Components.DomesticAnimalProduct;
 import View.main;
 import javafx.animation.Transition;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -21,11 +23,12 @@ public class DomesticAnimalAnimation extends AnimalAnimation {
 
 
     private DomesticAnimal animal ;
-    private int numberOfPics ;
-    private double theta ;
+    private int times ;
+    private boolean hasProduct = false ;
 
-    DomesticAnimalAnimation(View.Components.DomesticAnimal animal){
+    public DomesticAnimalAnimation(View.Components.DomesticAnimal animal){
         super(animal);
+        this.times = 0 ;
         this.animal = animal ;
         setCycleCount(-1);
         setCycleDuration(Duration.millis(1000));
@@ -33,72 +36,46 @@ public class DomesticAnimalAnimation extends AnimalAnimation {
 
     @Override
     protected void interpolate(double v) {
-        move();
-        setPic(v);
-        hitFloor();
-        hitLeft();
-        hitRight();
-        hitTop();
-    }
-
-    public void  move(){
-        double dx = animal.getSpeed() * Math.cos(Math.toRadians(theta));
-        double dy = animal.getSpeed() * Math.sin(Math.toRadians(theta));
-        animal.move(dx,dy);
-    }
-
-    public void setPic(double v ){
-        double degree = theta % 360 ;
-        String address = getClass().getResource("/Sample/pictures/").toExternalForm();
-        String picHint = "" ;
-        int frame = 0 ;
-        if( (degree>=0&&degree<=85) || (degree>=275&&degree<360) ){
-            frame = (int)Math.floor(v*rightPics);
-            picHint = "r" ;
-        } else if ( (degree>=95&&degree<=265)){
-            frame = (int)Math.floor(v*leftPics);
-            picHint = "l" ;
-        } else if (degree>265&&degree<275){
-            frame = (int)Math.floor(v*bottomPics);
-            picHint = "b" ;
-        } else if (degree>85&&degree<95){
-            frame = (int)Math.floor(v*topPics);
-            picHint = "t" ;
+        super.interpolate(v);
+        if(v==1){
+            animal.life -= 5 ;
+            times++ ;
+            decreaseProductLife();
+            if(hasProduct==true){
+                hasProduct=false ;
+            }
         }
-        animal.setBackground(address+picHint+frame+".png");
+        if(animal.life<=50){
+            //eat grass
+        }
+        makeProduct();
+        removeProducts();
     }
 
-    public void hitRight(){
-        if(animal.getLayoutX()+animal.getWidth()>= main.sceneWidth){
-            Random random = new Random();
-            int degree = random.nextInt(180);
-            theta = degree - 90 ;
+    public void makeProduct(){
+        if(times%animal.productTime==0&&times!=0&&hasProduct==false){
+            animal.makeProduct();
+            hasProduct=true ;
+            System.out.println("make");
         }
     }
 
-    public void hitLeft(){
-        if(animal.getLayoutX()<=0){
-            Random random = new Random();
-            int degree = random.nextInt(180) ;
-            theta = degree + 90 ;
+    public void decreaseProductLife(){
+        for (int i = 0; i < animal.products.size(); i++) {
+            animal.products.get(i).life--;
         }
     }
 
-    public void hitTop(){
-        if(animal.getLayoutY()<=0){
-            Random random = new Random();
-            int degree = random.nextInt(180);
-            theta = degree + 180 ;
+    public void removeProducts(){
+        boolean delete = false ;
+        for (int i = 0; i < DomesticAnimalProduct.allDomesticAnimalProducts.size()&&(!delete); i++) {
+            if(DomesticAnimalProduct.allDomesticAnimalProducts.get(i).life==0){
+                DomesticAnimalProduct.allDomesticAnimalProducts.get(i).remove();
+                DomesticAnimalProduct.allDomesticAnimalProducts.remove(i);
+                delete = true ;
+                break;
+            }
         }
     }
-
-    public void hitFloor(){
-        if(animal.getLayoutY()+animal.getHeight()>=main.sceneHeight){
-            Random random = new Random();
-            int degree = random.nextInt(180) ;
-            theta = degree ;
-        }
-    }
-
 
 }

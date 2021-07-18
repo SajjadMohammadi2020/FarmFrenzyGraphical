@@ -12,7 +12,7 @@ public class OtherAnimalAnimation extends AnimalAnimation {
 
     private View.Components.OtherAnimal otherAnimal ;
 
-    OtherAnimalAnimation(OtherAnimal animal){
+    public OtherAnimalAnimation(OtherAnimal animal){
         super(animal);
         this.otherAnimal = animal ;
         setCycleCount(-1);
@@ -21,6 +21,6 @@ public class OtherAnimalAnimation extends AnimalAnimation {
 
     @Override
     protected void interpolate(double v) {
-
+        super.interpolate(v);
     }
 }

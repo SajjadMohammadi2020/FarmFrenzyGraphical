@@ -1,5 +1,8 @@
 package View.Components;
 
+import Transition.AnimalAnimation;
+import Transition.DomesticAnimalAnimation;
+import Transition.OtherAnimalAnimation;
 import View.main;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -28,9 +31,11 @@ public class Logo extends Shape {
     private int price ;
     private Circle picture ;
     private Button button ;
+    private Pane pane ;
 
 
-    public Logo(String name , int price ){
+    public Logo(String name , int price , Pane pane){
+        this.pane = pane ;
         name = name.toLowerCase(Locale.ROOT);
         this.name = name ;
         this.price = price ;
@@ -63,15 +68,34 @@ public class Logo extends Shape {
                 logo.setCenterX(9*(dLogoRadius+logoRadius));
                 break;
         }
+        if(Logo.this.name.equals("hen")||Logo.this.name.equals("turkey")||Logo.this.name.equals("buffalo")){
         logo.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if(main.money>=Logo.this.price){
                     main.money -= Logo.this.price ;
-                    DomesticAnimal domesticAnimal = new DomesticAnimal(Logo.this.name) ;
+                    DomesticAnimal domesticAnimal = new DomesticAnimal(Logo.this.name,pane) ;
+                    pane.getChildren().add(domesticAnimal);
+                    System.out.println(domesticAnimal.name);
+                    System.out.println(domesticAnimal.getLayoutX());
+                    DomesticAnimalAnimation animation = new DomesticAnimalAnimation(domesticAnimal);
+                    animation.play();
                 }
             }
-        });
+        });} else if(Logo.this.name.equals("dog")||Logo.this.name.equals("cat")){
+            logo.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if(main.money>=Logo.this.price){
+                        main.money-=Logo.this.price;
+                        OtherAnimal animal = new OtherAnimal(Logo.this.name);
+                        pane.getChildren().add(animal);
+                        OtherAnimalAnimation animation = new OtherAnimalAnimation(animal) ;
+                        animation.play();
+                    }
+                }
+            });
+        }
         logo.setCursor(Cursor.HAND);
         return logo ;
     }
