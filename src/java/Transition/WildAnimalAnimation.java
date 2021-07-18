@@ -13,18 +13,18 @@ public class WildAnimalAnimation extends AnimalAnimation {
 
     private WildAnimal wildAnimal ;
 
-    WildAnimalAnimation(View.Components.WildAnimal wildAnimal){
-        super(wildAnimal
-        );
+    public WildAnimalAnimation(View.Components.WildAnimal wildAnimal){
+        super(wildAnimal);
         setCycleCount(-1);
         setCycleDuration(Duration.millis(1000));
         this.wildAnimal = wildAnimal ;
+
+        System.out.println("Willldddd");
     }
 
     @Override
     protected void interpolate(double v) {
-        String name = wildAnimal.getName().toLowerCase(Locale.ROOT) ;
-
+        super.interpolate(v);
     }
 
 
