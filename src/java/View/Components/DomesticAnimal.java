@@ -1,5 +1,7 @@
 package View.Components;
 
+import View.Mission;
+import View.main;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -52,6 +54,7 @@ public class DomesticAnimal extends Animal{
         this.name = name.toLowerCase(Locale.ROOT);
         switch (this.name){
             case "hen" :
+                //Mission.levels[main.level-1].
                 setHen();
                 break;
             case "turkey" :

@@ -69,7 +69,7 @@ public class DomesticAnimalAnimation extends AnimalAnimation {
     public void removeProducts(){
         boolean delete = false ;
         for (int i = 0; i < DomesticAnimalProduct.allDomesticAnimalProducts.size()&&(!delete); i++) {
-            if(DomesticAnimalProduct.allDomesticAnimalProducts.get(i).life==0){
+            if(DomesticAnimalProduct.allDomesticAnimalProducts.get(i).life<=0){
                 DomesticAnimalProduct.allDomesticAnimalProducts.get(i).remove();
                 DomesticAnimalProduct.allDomesticAnimalProducts.remove(i);
                 delete = true ;

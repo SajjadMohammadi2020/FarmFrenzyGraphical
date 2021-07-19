@@ -27,7 +27,7 @@ public class Timer extends Transition {
         return timerInstance ;
     }
 
-    private Button button ;
+    public Button button ;
     private Text text ;
     private Pane pane ;
 
@@ -57,6 +57,7 @@ public class Timer extends Transition {
         text.setText("Time : " + minute+" : "+second);
         button();
         button.setText(text.getText());
+        removeProducts();
     }
 
     private void button(){
@@ -74,12 +75,22 @@ public class Timer extends Transition {
             if(duration==time){
                 System.out.println(time);
                 String name = Mission.getMissionInstance().levels[level-1].wildAnimals[i][0];
-                WildAnimal animal = new WildAnimal(name);
-                pane.getChildren().add(animal);
-                WildAnimalAnimation animation = new WildAnimalAnimation(animal);
+                WildAnimal animal = new WildAnimal(name,pane);
+                WildAnimalAnimation animation = new WildAnimalAnimation(animal,pane);
                 animation.play();
             }
         }
     }
+
+    public void removeProducts(){
+        for (int i = 0; i < DomesticAnimalProduct.allDomesticAnimalProducts.size(); i++) {
+            if(DomesticAnimalProduct.allDomesticAnimalProducts.get(i).life==0){
+                pane.getChildren().remove(DomesticAnimalProduct.allDomesticAnimalProducts.get(i));
+                DomesticAnimalProduct.allDomesticAnimalProducts.remove(i);
+            }
+        }
+    }
+
+
 
 }

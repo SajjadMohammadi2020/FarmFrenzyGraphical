@@ -4,6 +4,7 @@ import View.Components.Animal;
 import javafx.animation.Transition;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -121,6 +122,57 @@ public class AnimalAnimation extends Transition {
         Random random = new Random();
         int degree = random.nextInt(180) ;
         return degree ;
+    }
+
+    public static boolean hasCollision(javafx.scene.shape.Rectangle rectangle1 , javafx.scene.shape.Rectangle rectangle2 ){
+        return hasTopCollision(rectangle1,rectangle2) || hasLeftCollision(rectangle1,rectangle2) ||
+                hasRightCollision(rectangle1,rectangle2) || hasBottomCollision(rectangle1,rectangle2) ;
+    }
+
+    public static boolean hasTopCollision(javafx.scene.shape.Rectangle rectangle1 , javafx.scene.shape.Rectangle rectangle2){
+        boolean a = rectangle1.getLayoutY()+rectangle1.getHeight() >= rectangle2.getLayoutY() ;
+        boolean b = rectangle1.getLayoutX() > rectangle2.getLayoutX()+rectangle2.getWidth();
+        boolean c = rectangle1.getLayoutX()+rectangle1.getWidth()<rectangle2.getLayoutX() ;
+        if(a&&!b&&!c){
+            return true ;
+        } else {
+            return false ;
+        }
+    }
+
+    public static boolean hasLeftCollision(javafx.scene.shape.Rectangle rectangle1 , javafx.scene.shape.Rectangle rectangle2){
+        boolean a = rectangle1.getLayoutX() + rectangle1.getWidth() >= rectangle2.getLayoutX() ;
+        boolean b = rectangle1.getLayoutY() > rectangle2.getLayoutY() + rectangle2.getHeight() ;
+        boolean c = rectangle1.getLayoutY()+rectangle1.getHeight() < rectangle2.getLayoutY() ;
+        if(a&&!b&&!c){
+            return true ;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean hasRightCollision(javafx.scene.shape.Rectangle rectangle1 ,javafx.scene.shape.Rectangle rectangle2){
+        boolean a = rectangle1.getLayoutX() <= rectangle2.getLayoutX() + rectangle2.getWidth() ;
+        boolean b = rectangle1.getLayoutY() > rectangle2.getLayoutY() + rectangle2.getHeight() ;
+        boolean c = rectangle1.getLayoutY()+rectangle1.getHeight() < rectangle2.getLayoutY() ;
+        if(a&&!b&&!c){
+            return true ;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean hasBottomCollision(javafx.scene.shape.Rectangle rectangle1 ,javafx.scene.shape.Rectangle rectangle2){
+        System.out.println("x:"+rectangle1.getX());
+        System.out.println("x:"+rectangle2.getX());
+        boolean a = rectangle1.getLayoutY() <= rectangle2.getLayoutY()+rectangle2.getHeight();
+        boolean b = rectangle1.getLayoutX() > rectangle2.getLayoutX()+rectangle2.getWidth();
+        boolean c = rectangle1.getLayoutX()+rectangle1.getWidth()<rectangle2.getLayoutX() ;
+        if(a&&!b&&!c){
+            return true ;
+        } else {
+            return false ;
+        }
     }
 
 }

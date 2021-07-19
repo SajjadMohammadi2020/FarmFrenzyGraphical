@@ -90,7 +90,7 @@ public class Logo extends Shape {
                         main.money-=Logo.this.price;
                         OtherAnimal animal = new OtherAnimal(Logo.this.name);
                         pane.getChildren().add(animal);
-                        OtherAnimalAnimation animation = new OtherAnimalAnimation(animal) ;
+                        OtherAnimalAnimation animation = new OtherAnimalAnimation(animal,pane) ;
                         animation.play();
                     }
                 }

@@ -1,5 +1,13 @@
 package View.Components;
 
+import Transition.WildAnimalAnimation;
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -31,12 +39,23 @@ public class WildAnimal extends Animal{
     //متغیرهای موجود در این کلاس
     private boolean caged ;
     public double lowSpeed ;
+    public int numberCaged ;
+    public Rectangle cage ;
+    public Pane pane ;
+    public WildAnimalAnimation wildAnimalAnimation ;
 
+    public WildAnimal(String name , Pane pane ){
+        cage = new Rectangle() ;
 
-    public WildAnimal(String name){
+        String url = "/Sample/pictures/cage/image_part_001.png" ;
+        cage.setFill(new ImagePattern(new Image(getClass().getResource(url).toExternalForm())));
+        this.pane = pane ;
+        this.numberCaged = 0 ;
         this.speed = lowSpeed ;
         this.name = name.toLowerCase(Locale.ROOT) ;
         this.caged = false ;
+        this.pane.getChildren().add(this);
+        this.pane.getChildren().add(cage);
         switch (this.name){
             case "lion" :
                 setLion();
@@ -49,7 +68,24 @@ public class WildAnimal extends Animal{
                 break;
         }
         allWildAnimals.add(this);
-        System.out.println("wiiillllllllllddd");
+        this.cage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(numberCaged<8) {
+                    numberCaged++;
+                    String url = "/Sample/pictures/cage/image_part_00" + (numberCaged + 1)+".png";
+                    cage.setFill(new ImagePattern(new Image(getClass().getResource(url).toExternalForm())));
+                    WildAnimal.this.speed -= (double)lionSpeed/8 ;
+                    if(numberCaged==8){
+                        caged = true ;
+                    }
+                } else {
+                    pane.getChildren().remove(WildAnimal.this);
+                    pane.getChildren().remove(WildAnimal.this.cage);
+                    allWildAnimals.remove(WildAnimal.this);
+                }
+            }
+        });
     }
 
     public void  setLion(){

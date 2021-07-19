@@ -1,8 +1,19 @@
 package View;
 
+import Transition.AnimalAnimation;
+import View.Components.Timer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -35,7 +46,7 @@ public class Mission {
 
     //متغیر های این کلاس
     int levelNumber ;
-    public Levels[] levels ;
+    public static Levels[] levels ;
     public static Mission missionInstance ;
 
     public static Mission getMissionInstance(){
@@ -126,6 +137,47 @@ public class Mission {
         }
         return result ;
     }
+
+    public static void missionPage(){
+        Pane pane = new Pane();
+        HBox hBox = new HBox();
+        hBox.setLayoutX(200);
+        hBox.setLayoutY(100);
+        hBox.setPrefWidth(400);
+        hBox.setPrefHeight(600);
+        hBox.getChildren().add(new Text("Your missions is : \n"));
+        if(Mission.levels[main.level-1].max_egg!=0){ hBox.getChildren().add(new Text("Egg : " + Mission.levels[main.level-1].egg + " / " + Mission.levels[main.level-1].max_egg +"\n")); }
+        if(Mission.levels[main.level-1].max_feather!=0){ hBox.getChildren().add(new Text("Feather : " + Mission.levels[main.level-1].feather + " / " + Mission.levels[main.level-1].max_feather +"\n")); }
+        if(Mission.levels[main.level-1].max_milk!=0){ hBox.getChildren().add(new Text("Milk : " + Mission.levels[main.level-1].milk + " / " + Mission.levels[main.level-1].max_milk +"\n")); }
+        if(Mission.levels[main.level-1].max_egg_first_product!=0){ hBox.getChildren().add(new Text("Flour : " + Mission.levels[main.level-1].egg_first_product + " / " + Mission.levels[main.level-1].max_egg_first_product+"\n" )); }
+        if(Mission.levels[main.level-1].max_feather_first_product!=0){ hBox.getChildren().add(new Text("Fabric : " + Mission.levels[main.level-1].feather_first_product + " / " +Mission.levels[main.level-1].max_feather_first_product+"\n" )); }
+        if(Mission.levels[main.level-1].max_milk_first_product!=0){ hBox.getChildren().add(new Text("PackedMilk : " + Mission.levels[main.level-1].milk_first_product + " / " +Mission.levels[main.level-1].max_milk_first_product+"\n" )); }
+        if(Mission.levels[main.level-1].max_egg_second_product!=0){ hBox.getChildren().add(new Text("Bread : " + Mission.levels[main.level-1].egg_second_product + " / " + Mission.levels[main.level-1].max_egg_second_product+"\n" )); }
+        if(Mission.levels[main.level-1].max_feather_second_product!=0){ hBox.getChildren().add(new Text("Cloth : " + Mission.levels[main.level-1].feather_second_product + " / " + Mission.levels[main.level-1].max_feather_second_product+"\n" )); }
+        if(Mission.levels[main.level-1].max_milk_second_product!=0){ hBox.getChildren().add(new Text("Ice cream : " + Mission.levels[main.level-1].milk_second_product + " / " +Mission.levels[main.level-1].max_milk_second_product +"\n")); }
+        if(Mission.levels[main.level-1].max_hen!=0){ hBox.getChildren().add(new Text("Hen : " + Mission.levels[main.level-1].hen + " / " + Mission.levels[main.level-1].max_hen +"\n")); }
+        if(Mission.levels[main.level-1].max_turkey!=0){ hBox.getChildren().add(new Text("Turkey : " + Mission.levels[main.level-1].turkey + " / " + Mission.levels[main.level-1].max_turkey+"\n" )); }
+        if(Mission.levels[main.level-1].max_buffalo!=0){ hBox.getChildren().add(new Text("Buffalo : " + Mission.levels[main.level-1].buffalo + " / " + Mission.levels[main.level-1].max_buffalo +"\n")); }
+        if(Mission.levels[main.level-1].max_mission_coins!=0){ hBox.getChildren().add(new Text("Coin : " + Mission.levels[main.level-1].coins + " / " + Mission.levels[main.level-1].max_mission_coins +"\n")); }
+        pane.getChildren().add(hBox);
+        Button button = new Button();
+        Scene old = main.stage.getScene() ;
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < AnimalAnimation.allAnimalAnimation.size(); i++) {
+                    AnimalAnimation.allAnimalAnimation.get(i).play();
+                }
+                Timer.getTimerInstance(pane,main.level).play();
+                main.stage.setScene(old);
+            }
+        });
+        button.setText("OK");
+        pane.getChildren().add(button);
+        Scene scene = new Scene(pane,600,600);
+        main.stage.setScene(scene);
+    }
+
 
 }
 
